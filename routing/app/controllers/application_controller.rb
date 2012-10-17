@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
     logger.info "Comparing router versions...(App:#{Rails.application.config.router_version} vs Cache:#{last_update})"
 
     # Reload routing table if out of date
-    if Rails.application.config.router_version < last_update
+    if Rails.application.config.router_version < last_update || last_update == 0
       reload_routes
       Rails.application.config.router_version = last_update
     end

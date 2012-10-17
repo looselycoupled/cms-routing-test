@@ -30,7 +30,10 @@ gem 'jquery-rails'
 # gem 'jbuilder'
 
 # Use unicorn as the app server
-# gem 'unicorn'
+gem 'unicorn'
+
+# Use thin as an alternate app server for testing
+gem 'thin'
 
 # Deploy with Capistrano
 # gem 'capistrano'

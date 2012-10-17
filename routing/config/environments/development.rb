@@ -34,4 +34,16 @@ Routing::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  # Enable caching using memcached (no arguments for localhost)
+  config.cache_store = :dalli_store 
+
+
+  config.logger = Logger.new(STDOUT)
+  config.logger.level = Logger.const_get(
+    ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'DEBUG'
+  )
+
+  config.router_timestamp  = nil
 end
+

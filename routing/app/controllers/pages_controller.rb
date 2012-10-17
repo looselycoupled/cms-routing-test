@@ -47,6 +47,7 @@ class PagesController < ApplicationController
 
     respond_to do |format|
       if @page.save
+        update_router_timestamp
         reload_routes
         format.html { redirect_to @page, notice: 'Page was successfully created.' }
         format.json { render json: @page, status: :created, location: @page }
@@ -64,6 +65,7 @@ class PagesController < ApplicationController
 
     respond_to do |format|
       if @page.update_attributes(params[:page])
+        update_router_timestamp
         reload_routes
         format.html { redirect_to @page, notice: 'Page was successfully updated.' }
         format.json { head :no_content }
@@ -79,6 +81,7 @@ class PagesController < ApplicationController
   def destroy
     @page = Page.find(params[:id])
     @page.destroy
+    update_router_timestamp
     reload_routes
 
     respond_to do |format|
@@ -88,10 +91,6 @@ class PagesController < ApplicationController
   end
 
   private
-
-  def reload_routes
-    Routing::Application.reload_routes!
-  end
 
 
 end

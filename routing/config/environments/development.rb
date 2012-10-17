@@ -44,6 +44,6 @@ Routing::Application.configure do
     ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'DEBUG'
   )
 
-  config.router_timestamp  = nil
+  config.router_version  = 0
 end
 

@@ -8,28 +8,27 @@ class ApplicationController < ActionController::Base
   private
 
   def check_routing_version
-    # Initialize timestamp if needed
-    Rails.application.config.router_timestamp = Time.now unless Rails.application.config.router_timestamp
-    # get latest router timestamp
-    last_update = Rails.cache.fetch("router_timestamp") do
-      Time.now
+    # get latest router version
+    last_update = Rails.cache.fetch("router_version") do
+      0
     end
 
-    logger.info "Comparing router timestamps..."
+    logger.info "Comparing router versions...(App:#{Rails.application.config.router_version} vs Cache:#{last_update})"
 
     # Reload routing table if out of date
-    if Rails.application.config.router_timestamp <= last_update
-      logger.info "Reloading routing table"
+    if Rails.application.config.router_version < last_update
       reload_routes
-      Rails.application.config.router_timestamp = last_update
+      Rails.application.config.router_version = last_update
     end
   end
 
-  def update_router_timestamp
-    Rails.cache.write("router_version", Time.now)
+  def update_router_version
+    Rails.cache.write("router_version", Rails.cache.read("router_version") + 1)
+    reload_routes
   end
 
   def reload_routes
+    logger.info "Loading routing table"
     Routing::Application.reload_routes!
   end
 
